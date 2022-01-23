@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.12.4",
+    "axios": "^0.25.0",
     "quasar": "^2.4.12",
     "vue": "^3.2.25"
   },
