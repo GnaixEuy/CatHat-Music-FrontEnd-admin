@@ -5,6 +5,10 @@
         <q-btn dense flat icon="menu" round @click="toggleLeftDrawer" />
 
         <q-toolbar-title> 猫猫头音乐</q-toolbar-title>
+        <q-space />
+        <q-avatar color="teal" text-color="white"
+          >{{ nicknameFirstWord }}
+        </q-avatar>
       </q-toolbar>
     </q-header>
 
@@ -17,13 +21,18 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'Layout',
   setup() {
     const leftDrawerOpen = ref(false);
+
+    const store = useStore();
+
     return {
+      nicknameFirstWord: computed(() => store.getters.nicknameFirstWord),
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;

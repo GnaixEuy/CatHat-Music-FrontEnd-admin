@@ -2,8 +2,9 @@
   <div class="login-page">
     <q-card class="login-form-content">
       <div class="title">猫猫头音乐后台</div>
-      <q-form class="q-gutter-md">
+      <q-form class="q-gutter-md" @submit="onSubmit(username, password)">
         <q-input
+          v-model="username"
           :rules="[val => (val && val.length > 0) || '请输入用户名']"
           filled
           label="用户名："
@@ -11,6 +12,7 @@
         />
 
         <q-input
+          v-model="password"
           :rules="[val => (val && val.length > 0) || '请输入密码']"
           filled
           label="密码："
@@ -35,13 +37,28 @@
 
 <script>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   name: 'Login',
   setup() {
     const accept = ref(false);
+    const username = ref('');
+    const password = ref('');
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
+    const onSubmit = (username, password) => {
+      store.dispatch('user/login', { username, password }).then(() => {
+        router.push({ path: route.query.redirect || '/' });
+      });
+    };
     return {
-      accept
+      accept,
+      username,
+      password,
+      onSubmit
     };
   }
 };
