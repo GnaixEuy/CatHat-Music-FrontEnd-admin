@@ -44,13 +44,14 @@ export default {
   name: 'Login',
   setup() {
     const accept = ref(false);
-    const username = ref('');
-    const password = ref('');
+    const username = ref('admin22');
+    const password = ref('dddddd');
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
     const onSubmit = (username, password) => {
       store.dispatch('user/login', { username, password }).then(() => {
+        store.dispatch('user/fetchCurrentUser');
         router.push({ path: route.query.redirect || '/' });
       });
     };
