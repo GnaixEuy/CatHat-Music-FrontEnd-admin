@@ -9,6 +9,13 @@
         <q-space />
         <q-avatar color="teal" text-color="white"
           >{{ nicknameFirstWord }}
+          <q-menu fit>
+            <q-list style="min-width: 100px">
+              <q-item v-close-popup clickable @click="logout">
+                <q-item-section>退出</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-avatar>
       </q-toolbar>
     </q-header>
@@ -60,7 +67,9 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       menuRoutes,
-      route
+      route,
+      logout: () =>
+        store.dispatch('user/logout').then(() => window.location.reload())
     };
   }
 };
