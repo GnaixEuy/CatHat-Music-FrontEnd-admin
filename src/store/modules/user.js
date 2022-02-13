@@ -6,8 +6,8 @@ import {
   setCurrentUser,
   setToken
 } from '../../utils/auth.js';
-import { createToken } from '../../api/token.js';
-import { me } from '../../api/user.js';
+import { createToken } from '../../api/token';
+import { me } from '../../api/user';
 
 const state = () => ({
   token: getToken(),
@@ -16,7 +16,9 @@ const state = () => ({
 
 const getters = {
   nicknameFirstWord: state => {
-    return state.currentUser ? state.currentUser.nickname.slice(0, 1) : '';
+    return state.currentUser && state.currentUser.nickname
+      ? state.currentUser.nickname.slice(0, 1)
+      : '';
   }
 };
 
@@ -25,7 +27,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       createToken(username.trim(), password)
         .then(token => {
-          console.log(token);
           commit('SET_TOKEN', token);
           setToken(token);
           resolve();
@@ -37,17 +38,17 @@ const actions = {
   },
   logout({ commit }) {
     commit('SET_TOKEN', '');
-    commit('SET_CURRENT_USER', '');
+    commit('SET_CURRENT_USER', null);
     removeToken();
     removeCurrentUser();
   },
   fetchCurrentUser({ commit }) {
     return new Promise((resolve, reject) => {
       me()
-        .then(currentUser => {
-          commit('SET_CURRENT_USER', currentUser);
-          setCurrentUser(currentUser);
-          resolve(currentUser);
+        .then(currenUser => {
+          commit('SET_CURRENT_USER', currenUser);
+          setCurrentUser(currenUser);
+          resolve(currenUser);
         })
         .catch(error => {
           reject(error);
@@ -60,7 +61,7 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token;
   },
-  SET_CURRENT_USER: currentUser => {
+  SET_CURRENT_USER: (state, currentUser) => {
     state.currentUser = currentUser;
   }
 };

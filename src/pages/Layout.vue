@@ -50,7 +50,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { menuRoutes } from '../router/index.js';
+import { menuRoutes } from '../router';
 
 export default {
   name: 'Layout',
