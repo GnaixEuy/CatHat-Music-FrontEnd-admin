@@ -1,68 +1,46 @@
 <template>
-  <div class="page">
-    <div class="q-mt-md q-mb-md">
-      <q-btn color="primary" label="添加用户" />
+  <div className="page">
+    <div className="q-mt-md q-mb-md">
+      <q-btn color="primary" label="添加用户" @click="showDialog" />
     </div>
-    <q-table :columns="columns" :rows="data" hide-pagination row-key="name" />
-    <div class="row justify-center q-mt-md">
-      <q-pagination
-        v-model="pagination.page"
-        :max="pagesNumber"
-        color="grey-8"
-        size="sm"
-      />
-    </div>
+    <q-table
+      v-model:pagination="pagination"
+      :columns="columns"
+      :rows="data"
+      row-key="name"
+      @request="fetchData"
+    />
+    <create-dialog v-if="show" @hide="hideDialog" @create-success="fetchData" />
   </div>
 </template>
 
-<script>
-import { ref, computed } from 'vue';
-import { search } from '../../api/user.js';
+<script setup>
+import { useUserSearch } from '../../composables/useUserSearch.js';
+import { useToggleDialog } from '../../composables/useToggleDialog.js';
+import CreateDialog from './CreateDialog.vue';
+import { ref } from 'vue';
 
-export default {
-  name: 'Index',
-  setup() {
-    const columns = [
-      {
-        label: 'ID',
-        field: 'id'
-      },
-      {
-        field: 'username',
-        label: '用户名'
-      },
-      {
-        field: 'nickname',
-        label: '昵称'
-      }
-    ];
-    const data = ref([]);
-    const fetchData = () => {
-      search({ page: 0, size: 5 }).then(res => {
-        data.value = data.value.concat(res.records);
-        pagination.value.page = res.number + 1;
-        pagination.value.rowsPerPage = res.size;
-        pagination.value.rowsNumber = res.total;
-      });
-    };
-    fetchData();
-    const pagination = ref({
-      page: 2,
-      rowsPerPage: 10,
-      rowsNumber: 10
-    });
-    const rows = [];
-    return {
-      columns,
-      pagination,
-      rows,
-      pagesNumber: computed(() =>
-        Math.ceil(rows.length / pagination.value.rowsPerPage)
-      ),
-      data
-    };
+const columns = [
+  {
+    label: 'ID',
+    field: 'id'
+  },
+  {
+    field: 'username',
+    label: '用户名'
+  },
+  {
+    field: 'nickname',
+    label: '昵称'
   }
-};
+];
+const show = ref(false);
+const { showDialog, hideDialog } = useToggleDialog(show);
+const pagination = ref({
+  page: 1,
+  rowsPerPage: 10
+});
+const { data, fetchData } = useUserSearch(pagination);
 </script>
 
 <style scoped></style>

@@ -7,3 +7,7 @@ export const search = paging => {
 export const me = () => {
   return get('/users/me');
 };
+
+export const create = user => {
+  return post('/users', user);
+};
