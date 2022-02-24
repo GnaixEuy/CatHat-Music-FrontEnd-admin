@@ -12,7 +12,7 @@ export const useUserSearch = pagination => {
     };
     search(pageable).then(res => {
       data.value = res.records;
-      pagination.value.page = res.number + 1;
+      pagination.value.page = res.pages;
       pagination.value.rowsNumber = res.total;
     });
   };
