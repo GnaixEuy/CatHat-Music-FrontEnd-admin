@@ -1,0 +1,53 @@
+<template>
+  <q-dialog v-model="show" persistent>
+    <q-card style="min-width: 350px; padding: 20px 10px">
+      <q-card-section>
+        <div class="text-h6">添加音乐</div>
+      </q-card-section>
+      <q-form class="q-gutter-md" @submit="createMusic()">
+        <q-card-section>
+          <q-input
+            v-model="music.name"
+            :rules="[val => (val && val.length > 0) || '请填写音乐名！']"
+            autofocus
+            dense
+            label="音乐名"
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            v-model="music.description"
+            autofocus
+            dense
+            label="简介"
+            @keyup.enter="show = false"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn color="primary" label="确认" type="submit" />
+          <q-btn v-close-popup flat label="取消" />
+        </q-card-actions>
+      </q-form>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script setup>
+import { reactive, ref } from 'vue';
+import { create } from '../../api/music.js';
+import notify from '../../utils/notify.js';
+
+const show = ref(true);
+const music = reactive({ name: '', description: '' });
+const emmit = defineEmits(['create-success']);
+const createMusic = () => {
+  create(music).then(createdMusic => {
+    show.value = false;
+    notify.success(`音乐《${createdMusic.name}》创建成功！`);
+    emmit('create-success');
+  });
+};
+</script>
+
+<style scoped></style>
