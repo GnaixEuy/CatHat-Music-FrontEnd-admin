@@ -1,17 +1,17 @@
 <template>
   <div class="page">
-    <Uploader />
+    <CosUploader label="上传" style="width: 40vw" />
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
-import Uploader from '../../components/Uploader.vue';
+import CosUploader from '../../composables/useCosUploader.js';
 
 export default {
   name: 'Index',
-  components: { Uploader },
+  components: { CosUploader },
   setup() {
     const store = useStore();
     return {
