@@ -1,13 +1,17 @@
 <template>
-  <div>欢迎光临 {{ nickname }}</div>
+  <div class="page">
+    <Uploader />
+  </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import Uploader from '../../components/Uploader.vue';
 
 export default {
   name: 'Index',
+  components: { Uploader },
   setup() {
     const store = useStore();
     return {

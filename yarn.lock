@@ -532,6 +532,13 @@ copy-anything@^2.0.1:
   dependencies:
     is-what "^3.14.1"
 
+cos-js-sdk-v5@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/cos-js-sdk-v5/-/cos-js-sdk-v5-1.3.5.tgz#93eb574f2867bdb4da4823a3a59d651b77ae7155"
+  integrity sha512-PT5o40bXMIJ2A4AKPXRuZsRmN46xYa5XD4zR3mGpaBpRCkh5bnd/gCUoiZMlwH6DBSAmlIU3kxmLIsVgzLJ3KQ==
+  dependencies:
+    xmldom "^0.1.31"
+
 cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -1865,6 +1872,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+
+xmldom@^0.1.31:
+  version "0.1.31"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
+  integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
 
 yallist@^4.0.0:
   version "4.0.0"
