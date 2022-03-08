@@ -94,7 +94,6 @@ const columns = [
 ];
 const data = ref([]);
 const createDialogShow = ref(false);
-const editDialogShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
 const editRow = ref(null);
 const edit = row => {
