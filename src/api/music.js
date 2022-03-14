@@ -1,6 +1,8 @@
 import { get, post, put } from './request.js';
 
-export const list = () => get('/musics');
+export const search = searchFilter => {
+  return post('/musics/search', searchFilter);
+};
 
 export const create = music => post('/musics', music);
 
