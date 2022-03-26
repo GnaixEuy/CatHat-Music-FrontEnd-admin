@@ -13,19 +13,25 @@
             v-model="music.name"
             :rules="[val => (val && val.length > 0) || '请填写音乐名！']"
             autofocus
-            dense
             label="音乐名"
-            @keyup.enter="show = false"
-          />
-
-          <q-input
-            v-model="music.description"
-            autofocus
-            dense
-            label="简介"
+            outlined
             @keyup.enter="show = false"
           />
         </q-card-section>
+        <q-card-section>
+          <q-input
+            v-model="music.description"
+            autofocus
+            label="简介"
+            outlined
+            @keyup.enter="show = false"
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <artist-selection v-model:artistList="music.artistList" />
+        </q-card-section>
+
         <q-card-section>
           <uploader v-model:file="music.file" label="上传音乐" />
         </q-card-section>
@@ -44,6 +50,7 @@ import { reactive, ref } from 'vue';
 import { create, update } from '../../api/music.js';
 import notify from '../../utils/notify.js';
 import Uploader from '../../components/Uploader.vue';
+import ArtistSelection from '../../components/ArtistSelection.vue';
 
 const props = defineProps({
   data: {
@@ -56,17 +63,31 @@ const props = defineProps({
 const show = ref(true);
 const file = ref(null);
 const isEdit = ref(Boolean(props.data));
-const music = reactive(props.data || { name: '', description: '', file: null });
+const music = reactive(
+  props.data || { name: '', description: '', file: null, artistList: [] }
+);
 const emmit = defineEmits(['create-success', 'edit-success']);
 const createMusic = () => {
-  create(music).then(createdMusic => {
+  const createMusicRequest = {
+    ...music,
+    fileId: music.file.id,
+    artistIds:
+      music.artistList.length === 0 ? [] : music.artistList.map(item => item.id)
+  };
+  create(createMusicRequest).then(createdMusic => {
     show.value = false;
     notify.success(`音乐《${createdMusic.name}》创建成功！`);
     emmit('create-success');
   });
 };
 const editMusic = () => {
-  update(music.id, music).then(updatedMusic => {
+  const updateMusicRequest = {
+    ...music,
+    fileId: music.file.id,
+    artistIds:
+      music.artistList.length === 0 ? [] : music.artistList.map(item => item.id)
+  };
+  update(music.id, updateMusicRequest).then(updatedMusic => {
     show.value = false;
     notify.success(`音乐《${updatedMusic.name}》更新成功！`);
     emmit('edit-success');

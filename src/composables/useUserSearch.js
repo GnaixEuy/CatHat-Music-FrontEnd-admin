@@ -11,9 +11,9 @@ export const useUserSearch = pagination => {
       size: pagination.value.rowsPerPage
     };
     search(pageable).then(res => {
-      data.value = res.records;
-      pagination.value.page = res.pages;
-      pagination.value.rowsNumber = res.total;
+      data.value = res.content;
+      pagination.value.page = res.number + 1;
+      pagination.value.rowsNumber = res.totalElements;
     });
   };
 

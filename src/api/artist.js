@@ -11,3 +11,7 @@ export const create = artist => {
 export const update = (id, fields) => {
   return post(`/artists/${id}`, fields);
 };
+
+export const search = artistSearchFilter => {
+  return post('/artists/search', artistSearchFilter);
+};
