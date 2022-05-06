@@ -1,23 +1,24 @@
 <template>
-  <div className="page">
-    <div className="q-mt-md q-mb-md">
+  <div class="page">
+    <div class="q-mt-md q-mb-md">
       <q-btn color="primary" label="添加用户" @click="showDialog" />
     </div>
     <q-table
-      v-model:pagination="pagination"
-      :columns="columns"
       :rows="data"
+      v-model:pagination="pagination"
       row-key="name"
       @request="fetchData"
+      :columns="columns"
     />
     <create-dialog v-if="show" @hide="hideDialog" @create-success="fetchData" />
   </div>
 </template>
 
 <script setup>
-import { useUserSearch } from '../../composables/useUserSearch.js';
 import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
+import userApi from '../../api/user.js';
+import { useSearch } from '../../composables/useSearch.js';
 import { ref } from 'vue';
 
 const columns = [
@@ -34,13 +35,11 @@ const columns = [
     label: '昵称'
   }
 ];
-const show = ref(false);
-const { showDialog, hideDialog } = useToggleDialog(show);
-const pagination = ref({
-  page: 1,
-  rowsPerPage: 10
-});
-const { data, fetchData } = useUserSearch(pagination);
+
+const { showDialog, hideDialog, show } = useToggleDialog();
+
+const searchKeys = ref({});
+const { data, fetchData, pagination } = useSearch(userApi.search, searchKeys);
 </script>
 
 <style scoped></style>

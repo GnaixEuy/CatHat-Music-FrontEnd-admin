@@ -5,23 +5,23 @@
         <div class="text-h6">添加音乐</div>
       </q-card-section>
       <q-form
-        class="q-gutter-md"
         @submit="isEdit ? editMusic() : createMusic()"
+        class="q-gutter-md"
       >
         <q-card-section>
           <q-input
-            v-model="music.name"
             :rules="[val => (val && val.length > 0) || '请填写音乐名！']"
-            autofocus
+            v-model="music.name"
             label="音乐名"
-            outlined
+            autofocus
             @keyup.enter="show = false"
+            outlined
           />
         </q-card-section>
         <q-card-section>
           <q-input
-            v-model="music.description"
             autofocus
+            v-model="music.description"
             label="简介"
             outlined
             @keyup.enter="show = false"
@@ -47,7 +47,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { create, update } from '../../api/music.js';
+import musicApi from '../../api/music.js';
 import notify from '../../utils/notify.js';
 import Uploader from '../../components/Uploader.vue';
 import ArtistSelection from '../../components/ArtistSelection.vue';
@@ -60,13 +60,19 @@ const props = defineProps({
     }
   }
 });
+
 const show = ref(true);
+
 const file = ref(null);
+
 const isEdit = ref(Boolean(props.data));
+
 const music = reactive(
   props.data || { name: '', description: '', file: null, artistList: [] }
 );
+
 const emmit = defineEmits(['create-success', 'edit-success']);
+
 const createMusic = () => {
   const createMusicRequest = {
     ...music,
@@ -74,12 +80,13 @@ const createMusic = () => {
     artistIds:
       music.artistList.length === 0 ? [] : music.artistList.map(item => item.id)
   };
-  create(createMusicRequest).then(createdMusic => {
+  musicApi.create(createMusicRequest).then(createdMusic => {
     show.value = false;
     notify.success(`音乐《${createdMusic.name}》创建成功！`);
     emmit('create-success');
   });
 };
+
 const editMusic = () => {
   const updateMusicRequest = {
     ...music,
@@ -87,7 +94,7 @@ const editMusic = () => {
     artistIds:
       music.artistList.length === 0 ? [] : music.artistList.map(item => item.id)
   };
-  update(music.id, updateMusicRequest).then(updatedMusic => {
+  musicApi.update(music.id, updateMusicRequest).then(updatedMusic => {
     show.value = false;
     notify.success(`音乐《${updatedMusic.name}》更新成功！`);
     emmit('edit-success');

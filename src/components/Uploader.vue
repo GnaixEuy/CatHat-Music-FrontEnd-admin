@@ -23,10 +23,13 @@ defineProps({
     }
   }
 });
+
 const emit = defineEmits(['update:file']);
+
 const onFileUploaded = file => {
   emit('update:file', file);
 };
+
 const reUpload = () => {
   emit('update:file', null);
 };

@@ -1,20 +1,20 @@
 <template>
   <div>
     <q-select
-      v-model="selectedArtist"
       :options="artistOptions"
-      fill-input
+      v-model="selectedArtist"
       hide-selected
       hint="请输入音乐人名字检索"
-      input-debounce="0"
+      fill-input
       label="音乐人"
+      input-debounce="0"
       map-options
-      outlined
-      style="width: 250px; padding-bottom: 32px"
-      use-input
       @filter="onSearch"
       @input-value="setSelectedArtist"
       @update:model-value="onUpdateModel"
+      outlined
+      style="width: 250px; padding-bottom: 32px"
+      use-input
     >
     </q-select>
   </div>
@@ -22,7 +22,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { search } from '../api/artist.js';
+import artistApi from '../api/artist.js';
 
 const props = defineProps({
   artistList: {
@@ -32,18 +32,22 @@ const props = defineProps({
     }
   }
 });
+
 onMounted(() => {
   if (props.artistList.length !== 0) {
     selectedArtist.value = props.artistList[0].name;
   }
 });
+
 const emit = defineEmits(['update:artistList']);
+
 const onUpdateModel = currentSelection => {
   const result = artists.value.filter(
     item => item.id === currentSelection.value
   );
   emit('update:artistList', result);
 };
+
 const artists = ref([]);
 const artistOptions = computed(() => {
   return artists.value.map(item => {
@@ -53,10 +57,11 @@ const artistOptions = computed(() => {
 const selectedArtist = ref(null);
 const lastSearch = ref('');
 onMounted(() => {
-  search({ name: '' }).then(res => {
+  artistApi.search({ name: '' }).then(res => {
     artists.value = res.content;
   });
 });
+
 const onSearch = (name, update, abort) => {
   if (
     !selectedArtist.value ||
@@ -65,6 +70,7 @@ const onSearch = (name, update, abort) => {
     update();
     return;
   }
+
   update(() => {
     lastSearch.value = selectedArtist.value.label;
     search({ name: selectedArtist.value.label })
@@ -76,6 +82,7 @@ const onSearch = (name, update, abort) => {
       });
   });
 };
+
 const setSelectedArtist = value => {
   selectedArtist.value = { label: value, value: null };
 };
